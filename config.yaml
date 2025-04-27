@@ -1,3 +1,7 @@
 git_repo_path: /Users/miguel.ezh/Desktop/Tests/jenkins-pb-build
-project_path: /Users/miguel.ezh/Desktop/Tests/other-folder
-backup_path: /Users/miguel.ezh/Desktop/Tests/jenkins-backup
+project:
+  normalized_path:
+  project_path: /Users/miguel.ezh/Desktop/Tests/other-folder
+backup:
+  enabled: true
+  backup_path: /Users/miguel.ezh/Desktop/Tests/jenkins-backup

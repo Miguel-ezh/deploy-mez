@@ -6,10 +6,20 @@ import (
 	"os"
 )
 
+type Backup struct {
+	Enabled    bool   `yaml:"enabled"`
+	BackupPath string `yaml:"backup_path"`
+}
+
+type Project struct {
+	NormalizedPath string `yaml:"normalized_path"`
+	ProjectPath    string `yaml:"project_path"`
+}
+
 type Config struct {
-	GitRepoPath string `yaml:"git_repo_path"`
-	ProjectPath string `yaml:"project_path"`
-	BackupPath  string `yaml:"backup_path"`
+	GitRepoPath string  `yaml:"git_repo_path"`
+	Project     Project `yaml:"project"`
+	Backup      Backup  `yaml:"backup"`
 }
 
 func Load() Config {

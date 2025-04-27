@@ -19,7 +19,7 @@ func main() {
 
 	// Display help information if -help is provided
 	if *help {
-		fmt.Println("Deploy PB Reporting")
+		fmt.Println("Deploy")
 		fmt.Println("Usage: program [-d <commit_hash> | -v <commit_hash> | -help]")
 		fmt.Println("Options:")
 		fmt.Println("  -d <commit_hash>    Process configuration text")
@@ -45,26 +45,17 @@ func main() {
 
 	// Process the provided flag
 	config := config.Load()
-	gitRepo := commands.GithubRepo{
-		Path: config.GitRepoPath,
-	}
-	gitRepo.Pull()
 	if *deploy != "" {
-		commitDetails := gitRepo.GetCommitInfo(*deploy)
-		deploy := commands.FileDeployment{
-			ProjectPath: config.ProjectPath,
-			GitRepoPath: config.GitRepoPath,
-			BackupPath:  config.BackupPath,
-		}
-		deploy.Deploy(commitDetails)
+		if err := commands.DeployCommit(config, *deploy); err != nil {
+			fmt.Println(err)
 
-	} else if *validate != "" {
-		commitDetails := gitRepo.GetCommitInfo(*validate)
-		validation := commands.FileDeployment{
-			ProjectPath: config.ProjectPath,
-			GitRepoPath: config.GitRepoPath,
-			BackupPath:  config.BackupPath,
+			os.Exit(1)
 		}
-		validation.ValidateXml(commitDetails)
+	} else if *validate != "" {
+		if err := commands.ValidateCommit(config, *validate); err != nil {
+			fmt.Println(err)
+
+			os.Exit(1)
+		}
 	}
 }
